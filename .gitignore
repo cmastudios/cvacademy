@@ -1,0 +1,6 @@
+Dockerfile
+*.swp
+*.sqlite3
+.AppleDouble/
+.DS_Store
+*.pyc

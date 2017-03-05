@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>OpenCV Academy: Learn</title>
+		<link rel="stylesheet" href="{% static 'css/learn.css' %}">
+		<link href="{% static 'jquery-ui.css' %}" rel="stylesheet">
+		<script src="{% static 'ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'jquery.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'jquery-ui.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'jquery.cookie.js' %}" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<header>
+			<h1><a href="/learn/">OpenCV Academy</a></h1>
+			<hr>
+		</header>
+		{% block content %}
+		{% endblock %}
+		<footer>
+			<hr>
+			<p style="float: left">&copy; by Connor Monahan, 2016, Ratchet Rockers team 1706.</p>
+			<p style="text-align: right; float: right"><a href="/admin/">Admin</a></p>
+		</footer>
+	</body>
+</html>

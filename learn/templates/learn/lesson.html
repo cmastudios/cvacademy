@@ -1,0 +1,76 @@
+{% extends 'learn/base.html' %}
+{% block content %}
+{% if lesson %}
+<div class="pg-50">
+	<p><a href="#" id="dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Run Code</a></p>
+	<div id="editor">{{ lesson.code }}</div>
+	<textarea id="output" readonly>Program output will appear here. Any images displayed will render below.</textarea>
+	<div id="images"></div>
+</div>
+<div id="plan">{{ lesson.plan|escape|linebreaks }}</div>
+<div id="dialog" title="Execution Status">
+	Running code on server, please wait.
+	<div id="progressbar"></div>
+</div>
+<div id="dialog-error" title="Error Communicating with Server">
+	<span class="ui-icon ui-icon-alert" style="float: left"></span>Failed to upload code. Please try again.
+</div>
+{% endif %}
+<script>
+	var editor = ace.edit("editor");
+	editor.setTheme("ace/theme/monokai");
+	editor.getSession().setMode("ace/mode/python");
+	
+	var csrftoken = $.cookie('csrftoken');
+	function csrfSafeMethod(method) {
+		return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	$.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+				xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			}
+		}
+	});
+	
+	$("#dialog").dialog({
+		autoOpen: false
+	});
+	$("#dialog-error").dialog({
+		autoOpen: false
+	});
+	$("#dialog-link").click(function(event) {
+		event.preventDefault();
+		submitCode();
+	});
+	$("#progressbar").progressbar({
+		value: false
+	});
+	$(window).bind('keydown', function(event) {
+		if (event.ctrlKey || event.metaKey) {
+			switch (String.fromCharCode(event.which).toLowerCase()) {
+			case 's':
+				event.preventDefault();
+				$("#output").html("Saved.");
+				break;
+			case 'r':
+				event.preventDefault();
+				submitCode();
+				break;
+			}
+		}
+	});
+	function submitCode() {
+		$("#dialog").dialog("open");
+		$.post("/learn/compile/", { code: editor.getValue(), lessonid: {{ lesson.id }} }, function (data) {
+			$("#dialog").dialog("close");
+			$("#output").html(data.output);
+			$("#images").html(data.images);
+		}, "json").fail(function (jqxhr, text, error) {
+			$("#dialog").dialog("close");
+			$("#dialog-error").html(jqxhr.responseText);
+			$("#dialog-error").dialog("open");
+		});
+	}
+</script>
+{% endblock %}
