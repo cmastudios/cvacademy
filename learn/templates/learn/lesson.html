@@ -19,7 +19,11 @@
 <script>
 	var editor = ace.edit("editor");
 	editor.setTheme("ace/theme/monokai");
+    {% if lesson.language == 1 %}
 	editor.getSession().setMode("ace/mode/python");
+    {% elif lesson.language == 2 %}
+	editor.getSession().setMode("ace/mode/c_cpp");
+    {% endif %}
 	
 	var csrftoken = $.cookie('csrftoken');
 	function csrfSafeMethod(method) {
