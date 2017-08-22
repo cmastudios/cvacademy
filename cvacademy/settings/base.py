@@ -46,6 +46,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'cvacademy.urls'
@@ -86,6 +87,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+X_FRAME_OPTIONS = 'DENY'
 
 
 # Static files (CSS, JavaScript, Images)

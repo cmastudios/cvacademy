@@ -1,17 +1,12 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+import json
+
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from learn.models import Lesson, ExecutionStatus
 from . import code_execution
-
-import io
-import json
-import sys
-import os
-import base64
-import traceback
 
 
 # Create your views here.
