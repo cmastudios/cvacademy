@@ -21,7 +21,7 @@ class ProgramResult(object):
                 with open(file, "rb") as image:
                     self.images += "<figure><figcaption>" + file.rstrip(
                         "_imshow.png") + "</figcaption><img src=\"data:image/png;base64," + base64.b64encode(
-                        image.read()) + "\"></figure><br>"
+                        image.read()).decode('ascii') + "\"></figure><br>"
                 os.unlink(file)
 
 
@@ -68,6 +68,11 @@ def compile_execute(code: str, language: ProgramLanguage) -> ProgramResult:
     pwd = os.open('.', os.O_RDONLY)
     with tempfile.TemporaryDirectory(prefix='cvacademy') as tempdir:
         os.chdir(tempdir)
+
+        skel = '/path/to/skel'
+        if os.path.exists(skel):
+            for file in os.listdir(skel):
+                os.symlink(os.path.join(skel, file), file)
 
         fn = 'program.py'
         if language == ProgramLanguage.CPLUSPLUS:
